@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Properties -->
+    <property name="defaultPattern" value="%date{&quot;yyyy-MM-dd HH:mm:ss.SSSXXX&quot;, UTC} %level [%logger{36}]%replace(\[%mdc{prefix}\]){'\\[\\]', ''} %msg%replace(         &gt;&gt;&gt; %mdc){'^         &gt;&gt;&gt; $', ''}%n" />
+
+    <!-- Appenders -->
+    <!-- Synchronous standard output appender to access logs in Docker and Kubernetes -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${defaultPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Asynchronous standard output appender -->
+    <appender name="STDOUT_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <!-- Loggers -->
+    <logger name="akka" level="DEBUG" />
+    <logger name="org.apache.avro" level="WARN" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT_ASYNC" />
+    </root>
+</configuration>
