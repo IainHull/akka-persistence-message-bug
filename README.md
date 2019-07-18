@@ -1,11 +1,15 @@
 # akka-persistence-message-bug
 
-Small repository to reproduce a message bug in akka-persistence-typed where commands are lost when snapshots are created
+Small repository to reproduce a message bug in akka-persistence-typed where commands are lost when snapshots are created.
 
-When simulating large amounts of traffic in an application built on top of akka-persistence-typed it seems to loose commands
-sent to persistent actors when they are storing snapshots. Using a logging interceptor around the persistent actor all messages
-entering the behavior are logged. The persistent actor also logs all commands processed by the `commandHandler` and each time
-the function sent to `snapshotWhen` returns true. With these we can see message sent between these two points never make it to the
+[https://github.com/akka/akka/issues/27381]
+
+When simulating large amounts of traffic in an application built on top of akka-persistence-typed it seems to loose commands sent to
+persistent actors when they are storing snapshots.
+
+Using a logging interceptor around the persistent actor all messages entering the behavior are logged. The persistent actor also logs
+all commands processed by the `commandHandler` and each time the function sent to `snapshotWhen` returns true. With these we can see
+some messages sent to the persistent actor and logged by the interceptor while the snapshot is being written never make it to the
 `commandHandler`.
 
 * The mainline of this sample application is `io.github.iainhull.bug.Application`, run this it will stop once it has reproduced the bug.
