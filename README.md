@@ -8,6 +8,8 @@ entering the behavior are logged. The persistent actor also logs all commands pr
 the function sent to `snapshotWhen` returns true. With these we can see message sent between these two points never make it to the
 `commandHandler`.
 
+* The mainline of this sample application is `io.github.iainhull.bug.Application`, run this it will stop once it has reproduced the bug.
+* I have only seen it fail on an ask not a direct send.
 * This sample application uses a `TestActor` to sends 100s of `RegisterValue` commands to the `PersistentActor`.
 * After each batch of 100 it polls the `PersistentActor` with `GetState` requests to verified that all values have been received.
 * It stops if any of the values sent in `RegisterValue` are missing or the `GetState` ask times out.
